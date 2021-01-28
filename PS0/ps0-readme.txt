@@ -4,12 +4,14 @@
  **********************************************************************/
 
 Your name:
-
+    Seyedsepehr Madani
 Operating system you're using (Linux, OS X, or Windows):
-
+    Linux Ubuntu 20.04
 IDE or text editor you're using:
-
+    Visual Studio Code
 Hours to complete assignment:
+    3.5 Hours
+
 
 /**********************************************************************
  *  Part of Assignment 0 is to read the collaboration policy in syllabus.
@@ -27,21 +29,26 @@ Hours to complete assignment:
  *
  * Note: there is no single correct answer to this. I am looking for
  * your opinion.
- **********************************************************************/
-
+ *******************************************************************
+I would say item (f), "assists other students in any of these acts".
+Students get in touch with other very frequently, complaining about some 
+assignment or a quiz they can't quite finish on their own and ask for help.
+And well, in many cases students see that they can get away with giving each
+other the answers. The network of students helping each other cheat through
+assignments, quizzes, etc. is uncommonly large.
 
 
 /**********************************************************************
  *  List whatever help (if any) you received from TAs, the instructor,
  *  classmates, or anyone else.
  **********************************************************************/
-
-
+I did this assignment on my own, only with browsing the tutorials and 
+docs online.
 
 /**********************************************************************
  *  Describe any serious problems you encountered.                    
  **********************************************************************/
-
+None.
 
 
 /**********************************************************************
