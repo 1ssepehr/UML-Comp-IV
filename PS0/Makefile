@@ -10,4 +10,4 @@ game.o: game.cpp game.hpp
 
 clean:
 	rm -f *.o
-	rm -f smfl-app
+	rm -f sfml-app
