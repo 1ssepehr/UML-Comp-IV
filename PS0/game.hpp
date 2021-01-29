@@ -12,16 +12,27 @@
 
 #include <string>
 #include <list>
+#include <random>
+
+#define RNG ((float) std::rand() / (float) RAND_MAX) // float random in [0, 1)
 
 class Boulder: public sf::Sprite
 {
 public:
     Boulder();
     void move();
+
+    constexpr static float SPAWN_RATE = 5.f;
 private:
     sf::Texture texture;
     float speed_x;
     float speed_y;
+    float speed_r;
+
+    constexpr static float FALL_MIN_SPEED = 3.f;
+    constexpr static float FALL_MAX_SPEED = 12.f;
+    constexpr static float FALL_TILT_LIMIT = 1.f;
+
 };
 
 class SepGame
@@ -31,10 +42,15 @@ public:
     void load_gameOver();
     void start_game();
     void adjust_player();
+
+    constexpr static int WIDTH = 960;
+    constexpr static int HEIGHT = 800;
 private:
     sf::RenderWindow window;
     sf::RenderWindow gameOver;
     sf::Sprite PlayerSpr;
+    sf::Sprite BackgroundSpr_1;
+    sf::Sprite BackgroundSpr_2;
     sf::Texture PlayerTex;
     sf::Texture BackgroundTex;
     sf::Texture BoulderTex;
@@ -44,14 +60,9 @@ private:
     sf::Font font;
     sf::Text label;
     bool isGameOver;
-};
 
-constexpr int WINDOW_WIDTH = 960;
-constexpr int WINDOW_HEIGHT = 800;
-constexpr float PLAYER_SPEED = 7.f;
-constexpr float BOULDERING_RATE = 5.0;
-constexpr float BOULDER_SPEED_MIN = 3.f;
-constexpr float BOULDER_SPEED_MAX = 12.f;
-constexpr float BOULDER_HORIZONTAL_MAX_SPEED = 1.f;
+    constexpr static float PLAYER_SPEED = 7.f;
+    constexpr static float BG_SPEED = 1.5f;
+};
 
 #endif

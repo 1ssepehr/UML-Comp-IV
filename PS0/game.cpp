@@ -16,13 +16,14 @@
 
 Boulder::Boulder():
     sf::Sprite(),
-    speed_x((std::rand() % 100) / 100.0 * BOULDER_HORIZONTAL_MAX_SPEED),
-    speed_y(BOULDER_SPEED_MIN + ((std::rand() % 100) / 100.0) * (BOULDER_SPEED_MAX - BOULDER_SPEED_MIN))
+    speed_x(RNG * FALL_TILT_LIMIT),
+    speed_y(FALL_MIN_SPEED + (RNG) * (FALL_MAX_SPEED - FALL_MIN_SPEED)),
+    speed_r()
 {
-    if (!texture.loadFromFile("./assets/ball.png"))
+    if (!texture.loadFromFile("./assets/boulder.png"))
         throw EXIT_FAILURE;
     setTexture(texture);
-    setPosition({static_cast<float>(std::rand() % WINDOW_WIDTH), 0});
+    setPosition({RNG * SepGame::WIDTH, 0.f});
 }
 
 void Boulder::move() { sf::Sprite::move(sf::Vector2f{speed_x, speed_y}); }
@@ -30,7 +31,7 @@ void Boulder::move() { sf::Sprite::move(sf::Vector2f{speed_x, speed_y}); }
 SepGame::SepGame()
 {
     // Create the main window
-    window.create(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Assignment PS0 - Madani");
+    window.create(sf::VideoMode(WIDTH, HEIGHT), "Assignment PS0 - Madani");
     window.setFramerateLimit(60);
 
     // Load textures
@@ -43,18 +44,25 @@ SepGame::SepGame()
     BackgroundTex.setSmooth(true);
     BackgroundTex.setRepeated(true);
 
-    if (!BoulderTex.loadFromFile("./assets/ball.png"))
+    if (!BoulderTex.loadFromFile("./assets/boulder.png"))
         throw EXIT_FAILURE;
     BoulderTex.setSmooth(true);
-    
+
     // Load player sprite
     PlayerSpr.setTexture(PlayerTex);
-    PlayerSpr.setPosition({WINDOW_WIDTH * 0.5, WINDOW_HEIGHT * 0.8});
+    PlayerSpr.setPosition({WIDTH * 0.5, HEIGHT * 0.8});
+
+    // Load background sprite
+    BackgroundSpr_1.setTexture(BackgroundTex);
+    BackgroundSpr_2.setTexture(BackgroundTex);
+
+    BackgroundSpr_1.setPosition({0.f, -BackgroundSpr_2.getGlobalBounds().height});
+    BackgroundSpr_2.setPosition({0.f, 0.f});
 
     // Set up the environment
     std::srand(std::time(nullptr));
     isGameOver = false;
-    
+
 }
 
 void SepGame::load_gameOver()
@@ -110,29 +118,38 @@ void SepGame::start_game()
                     movement.y = -PLAYER_SPEED;
                 else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
                     movement.y = PLAYER_SPEED;
-            
+
             default:
                 break;
             }
         }
+        // Move background
+        BackgroundSpr_1.move({0.f, BG_SPEED});
+        BackgroundSpr_2.move({0.f, BG_SPEED});
+        auto bg_height = BackgroundSpr_1.getGlobalBounds().height;
+        if (BackgroundSpr_1.getPosition().y > bg_height)
+            BackgroundSpr_1.setPosition({0.f, -bg_height});
+        if (BackgroundSpr_2.getPosition().y > bg_height)
+            BackgroundSpr_2.setPosition({0.f, -bg_height});
 
-        // Moving Playerss
+
+        // Move Players
         PlayerSpr.move(movement);
         adjust_player();
 
         // Randomly add boulders
-        if (clock.getElapsedTime().asSeconds() >= (1.0 / BOULDERING_RATE))
+        if (clock.getElapsedTime().asSeconds() >= (1.0 / Boulder::SPAWN_RATE))
         {
             clock.restart();
             Obstacles.push_back(Boulder());
         }
-        
+
         // Moving boulders
         auto it = Obstacles.begin();
         while (it != Obstacles.end())
         {
             it->move();
-            if (it->getPosition().y > WINDOW_HEIGHT)  // Remove out-of-window boulders
+            if (it->getPosition().y > HEIGHT)  // Remove out-of-window boulders
                 Obstacles.erase(it++);
             else ++it;
         }
@@ -155,6 +172,8 @@ void SepGame::start_game()
         if(!isGameOver)
         {
             window.clear(sf::Color::Black);
+            window.draw(BackgroundSpr_1);
+            window.draw(BackgroundSpr_2);
             window.draw(PlayerSpr);
             for (auto boulder: Obstacles)
                 window.draw(boulder);
@@ -170,15 +189,15 @@ void SepGame::adjust_player()
 {
     auto curPosition = PlayerSpr.getPosition();
     auto dims = PlayerSpr.getGlobalBounds();
-    if (curPosition.x > WINDOW_WIDTH - dims.width) // Right constraint
-        PlayerSpr.setPosition({WINDOW_WIDTH - dims.width, curPosition.y});
+    if (curPosition.x > WIDTH - dims.width) // Right constraint
+        PlayerSpr.setPosition({WIDTH - dims.width, curPosition.y});
     if (curPosition.x < 0) // Left constraint
         PlayerSpr.setPosition({0, curPosition.y});
 
-    if (curPosition.y > WINDOW_HEIGHT - dims.height) // Down constraint
-        PlayerSpr.setPosition({curPosition.x, WINDOW_HEIGHT - dims.height});
-    if (curPosition.y < WINDOW_HEIGHT * 0.4) // Up constraint
-        PlayerSpr.setPosition({curPosition.x, WINDOW_HEIGHT * 0.4});
+    if (curPosition.y > HEIGHT - dims.height) // Down constraint
+        PlayerSpr.setPosition({curPosition.x, HEIGHT - dims.height});
+    if (curPosition.y < HEIGHT * 0.4) // Up constraint
+        PlayerSpr.setPosition({curPosition.x, HEIGHT * 0.4});
 
 }
 
@@ -187,6 +206,6 @@ int main()
     try {
         SepGame gameInstance;
         gameInstance.start_game();
-    } catch (int e) { return EXIT_FAILURE; } 
+    } catch (int e) { return EXIT_FAILURE; }
     return EXIT_SUCCESS;
 }
