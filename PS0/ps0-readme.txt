@@ -5,12 +5,15 @@
 
 Your name:
     Seyedsepehr Madani
+
 Operating system you're using (Linux, OS X, or Windows):
     Linux Ubuntu 20.04
+
 IDE or text editor you're using:
     Visual Studio Code
+
 Hours to complete assignment:
-    3.5 Hours
+    7.5 Hours
 
 
 /**********************************************************************
@@ -54,5 +57,24 @@ None.
 /**********************************************************************
  *  List any other comments here.                                     
  **********************************************************************/
+This project uses a Makefile.
+Here is the structure:
 
+PS0
+├── assets
+│   └── all images for textures in sprites
+├── src
+│   └── all .hpp & .cpp files here
+├── ps0-readme.txt (this file)
+└── Makefile
 
+`make' will create ./obj and ./bin, and the final executable will be in:
+    ./bin/sfml-app
+
+The project is a simple space game. You are a spaceship, avoiding incoming
+asteroids.
+
+Move your ship with Arrow ←↑→↓ keys. No guns, firing, etc. (yet.)
+Collisions are NOT pixel perfect. TODO for later.
+
+Enjoy!

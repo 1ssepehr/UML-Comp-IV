@@ -2,18 +2,29 @@ CC=g++
 LFLAGS= -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 CFLAGS= -Wall -Werror -pedantic
 
-sfml-app: game.o asteroid.o spaceship.o
-	$(CC) -o $@ $^ $(LFLAGS) $(CFLAGS)
+SRC_DIR := src
+OBJ_DIR := obj
+BIN_DIR := bin
 
-game.o: game.cpp game.hpp asteroid.hpp spaceship.hpp globals.hpp
-	$(CC) -o $@ $< $(CFLAGS) -c
+EXE := $(BIN_DIR)/sfml-app
 
-asteroid.o: asteroid.cpp asteroid.hpp game.hpp globals.hpp
-	$(CC) -o $@ $< $(CFLAGS) -c
+SRC := $(wildcard $(SRC_DIR)/*.cpp)
+OBJ := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
 
-spaceship.o: spaceship.cpp spaceship.hpp game.hpp globals.hpp
-	$(CC) -o $@ $< $(CFLAGS) -c
+.PHONY: all clean
+
+all: $(EXE)
+
+$(EXE): $(OBJ) | $(BIN_DIR)
+	$(CC) $^ $(LFLAGS) -o $@
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(BIN_DIR)  $(OBJ_DIR):
+	mkdir -p $@
 
 clean:
-	rm -f *.o
-	rm -f sfml-app
+	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)
+
+-include $(OBJ:.o=.d)
