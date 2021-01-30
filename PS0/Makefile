@@ -1,12 +1,18 @@
 CC=g++
-SFML_FLAG= -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-FLAGS= -Wall -Werror -pedantic
+LFLAGS= -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+CFLAGS= -Wall -Werror -pedantic
 
-sfml-app: game.o
-	$(CC) -o $@ $^ $(SFML_FLAG) $(FLAGS)
+sfml-app: game.o asteroid.o spaceship.o
+	$(CC) -o $@ $^ $(LFLAGS) $(CFLAGS)
 
-game.o: game.cpp game.hpp
-	$(CC) -o $@ $< $(FLAGS) -c
+game.o: game.cpp game.hpp asteroid.hpp spaceship.hpp globals.hpp
+	$(CC) -o $@ $< $(CFLAGS) -c
+
+asteroid.o: asteroid.cpp asteroid.hpp game.hpp globals.hpp
+	$(CC) -o $@ $< $(CFLAGS) -c
+
+spaceship.o: spaceship.cpp spaceship.hpp game.hpp globals.hpp
+	$(CC) -o $@ $< $(CFLAGS) -c
 
 clean:
 	rm -f *.o
