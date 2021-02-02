@@ -48,6 +48,7 @@ assignments, quizzes, etc. is uncommonly large.
 I did this assignment on my own, only with browsing the tutorials and 
 docs online.
 
+
 /**********************************************************************
  *  Describe any serious problems you encountered.                    
  **********************************************************************/
@@ -69,12 +70,12 @@ PS0
 └── Makefile
 
 `make' will create ./obj and ./bin, and the final executable will be in:
-    ./bin/sfml-app
+-->  ./bin/sfml-app  <--
 
 The project is a simple space game. You are a spaceship, avoiding incoming
 asteroids.
 
-Move your ship with Arrow ←↑→↓ keys. No guns, firing, etc. (yet.)
+Move your ship with Arrow keys (←↑→↓ keys). No guns, firing, etc. (yet.)
 Collisions are NOT pixel perfect. TODO for later.
 
 Enjoy!

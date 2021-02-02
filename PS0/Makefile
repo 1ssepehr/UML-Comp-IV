@@ -1,6 +1,6 @@
 CC=g++
 LFLAGS= -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-CFLAGS= -Wall -Werror -pedantic
+CFLAGS= -Wall -Werror -pedantic -g
 
 SRC_DIR := src
 OBJ_DIR := obj
