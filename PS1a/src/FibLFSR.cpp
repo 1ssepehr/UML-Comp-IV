@@ -9,7 +9,7 @@ FibLFSR::FibLFSR(std::string seed, std::set<unsigned> tap_values)
     taps = tap_values;
     taps.insert(N - 1); // Add the leftmost index as a tap
     if (N < *taps.rbegin()) // if shorter than largest tap -> exception
-        throw std::invalid_argument("Given seed is too short.");
+        throw std::invalid_argument("Tap index out-of-bounds.");
 
     reg_list.reserve(N);
     for (char bit: seed)

@@ -25,7 +25,7 @@ BOOST_AUTO_TEST_CASE(sixteenBitsThreeTaps)
 }
 
 // testing an 8-bit LFSR with initial seed 00010010 and tap position 2, 7
-BOOST_AUTO_TEST_CASE(eightBitsOneTap) {
+BOOST_AUTO_TEST_CASE(eightBitsTwoTap) {
     FibLFSR l1("00010010", {2, 7});
     BOOST_REQUIRE(l1.step() == 0);
     BOOST_REQUIRE(l1.step() == 1);
