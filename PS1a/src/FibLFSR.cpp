@@ -42,6 +42,6 @@ std::ostream& operator<<(std::ostream& out, FibLFSR X)
 {
     std::string result;
     for (bool bit: X.reg_list)
-        result += bit;
+        result += bit + '0';
     return out << result;
 }
