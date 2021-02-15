@@ -3,11 +3,10 @@
 
 #include "FibLFSR.hpp"
 
-#include <SFML/System.hpp>
-#include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
-
-void transform(sf::Image& image, FibLFSR& L);
+// Encrypts an sf::Image object using a FibLFSR object.
+void transform(sf::Image &image, FibLFSR &L);
 
 #endif /* End of PhotoMagic.hpp */

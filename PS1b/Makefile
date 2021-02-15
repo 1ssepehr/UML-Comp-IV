@@ -1,12 +1,12 @@
-CXX       = g++
-CFLAGS   = -g -Wall -Werror -pedantic
+CXX      = g++
+CFLAGS   = -Wall -Werror -pedantic
 LFLAGS   = -lsfml-graphics -lsfml-window -lsfml-system
 
 SRC_DIR  := src
 OBJ_DIR  := obj
 BIN_DIR  := bin
 
-EXE      := boosttest
+EXE      := PhotoMagic
 TARGET   := $(BIN_DIR)/$(EXE)
 
 SOURCES  := $(wildcard $(SRC_DIR)/*.cpp)
