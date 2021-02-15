@@ -6,7 +6,8 @@
 
 void transform(sf::Image &image, FibLFSR &L)
 {
-    int percent, progress = 0;
+    int percent;
+    int progress = 0;
     std::cout << "Processing image..." << std::endl;
 
     sf::Color p;
@@ -21,11 +22,11 @@ void transform(sf::Image &image, FibLFSR &L)
             p.b ^= L.generate(8);
             image.setPixel(x, y, p);
             
-            percent = 100 * ((y + 1) + ((x + 1) * size.y))/(size.x * size.y);
+            percent = 60 * ((y + 1) + ((x + 1) * size.y))/(size.x * size.y);
             if (percent >= progress)
             {
-                std::cout << "\r" << "[" << std::string(percent, '=') << std::string(100 - percent, ' ') << "] ";
-                std::cout << percent << "%";
+                std::cout << "\r" << "[" << std::string(percent, '=') << std::string(60 - percent, ' ') << "] ";
+                std::cout << (percent * 100) / 60 << "%";
                 std::cout.flush();
                 progress++;
             }

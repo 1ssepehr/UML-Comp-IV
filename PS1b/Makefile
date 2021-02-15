@@ -4,10 +4,10 @@ LFLAGS   = -lsfml-graphics -lsfml-window -lsfml-system
 
 SRC_DIR  := src
 OBJ_DIR  := obj
-BIN_DIR  := bin
+BIN_DIR  :=
 
 EXE      := PhotoMagic
-TARGET   := $(BIN_DIR)/$(EXE)
+TARGET   := $(EXE)
 
 SOURCES  := $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
@@ -33,6 +33,6 @@ $(BIN_DIR) $(OBJ_DIR):
 	@mkdir -pv $@
 
 clean:
-	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)
+	@$(RM) -rvf $(BIN_DIR) $(OBJ_DIR) $(TARGET)
 
 -include $(OBJ:.o=.d)
