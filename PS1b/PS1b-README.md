@@ -16,6 +16,21 @@ The encoding process is to XOR every pixel's RGB value with the 8-bit code gener
 
 I wrote a revised unit test for this assignment as well.
 
+Assignment directory:
+
+```text
+PS1b
+├── screenshots
+│   └─── encode.png, decode.png
+├── src
+│   └─── main.cpp, FibLFSR.hpp, FibLFSR.cpp, PhotoMagic.hpp, PhotoMagic.cpp
+├── test
+│   └─── test.cpp (Boost's Unit Test)
+├── PS1b-README.md/pdf (this file)
+├── wolf.png, juggernaut.png
+└── Makefile
+```
+
 The test can be run via:
 
 ```Bash
