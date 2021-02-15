@@ -31,6 +31,8 @@ FibLFSR::FibLFSR(std::string seed, std::set<unsigned> tap_values)
 
 FibLFSR::FibLFSR(std::string keyphrase)
 {
+    if (keyphrase.length() == 0)
+        throw std::invalid_argument("Given keyphrase is empty.");
     // Hashes a keyphrase to a 64-bit long seed for the register.
     unsigned long long hash = _HASH_CONST;
     for (auto c : keyphrase)
