@@ -2,7 +2,7 @@
 
 ***Name:** Seyedsepehr Madani*
 
-***Hours to complete assignment:** 6 hours*
+***Hours to complete assignment:** 8 hours*
 
 ## Questions
 
@@ -10,30 +10,17 @@
 
 ### Briefly discuss the assignment itself and what you accomplished.
 
-This assignment consists of implementing and unit-testing a [simulation of a] Linear Feedback Shift Register (LFSR) for generating pseudo-random bits.
-
-An LFSR is a register that generates the next state of the vacant bit after shifting via a linear function of the current bits (in this case, we use a selection of bits and XOR them to obtain the next bit).
+In this assignment, we encode an input image with an LFSR seed, and use the same seed to decode the image back to its original.
 
 I designed an exception-safe simulation of an LFSR using C++ and wrote three unit-tests using the Boost Unit Test Framework.
 
 ---
 
-### Explain the representation you used for the register bits (how it works, and why you selected it).
+### If you did any implementation for extra credit, describe it here and why it is interesting.
 
-A lot of students were suggesting using std::bitset for the internal
-representation of the register; I disagreed, as the size of the seed (and ergo,the size of the register) is not known until run-time. There was the option of boost::dynamic_bitset, but I passed.
+For the extra credit part, I used the well-known [djb2 hash](http://www.cse.yorku.ca/~oz/hash.html) to hash the string value of the keyphrase into a 64-bit `unsigned long long` type, which I would use for my LSFR seed.
 
-I simply used `std::vector<bool>` for emulating the register. This allows for *O(1)* random access for the taps, and *O(1)* insertion/removal at the ends (shifting).
-
-Also, as an STL container, using `std::vector` eliminates the need for manual dynamic memory allocation.
-
----
-
-### Discuss what's being tested in your two additional Boost unit tests
-
-The first test I wrote tests the return values for `FibLFSR::step()` and `FibLFSR::generate()` functions.
-
-The second test I wrote examines the exception-safety of the FibLFSR module by testing different invalid arguments for a seed (i.e. a seed with invalid characters or a tap position beyond the length of the seed).
+In PS1a, I had been using `std::vector<bool>` for emulating the register, which in hindsight was terribly inefficient. Instead, I switched my register container to a `unsigned long long` (guarantee of 64 bits from C++11) with bitwise operations for the linear feedback function. This was simple, safe, and allowed for seeds up to 64 bits. This significantly improved the performace of my program for large pictures.
 
 ---
 
