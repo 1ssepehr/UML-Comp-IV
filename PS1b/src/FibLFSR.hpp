@@ -1,7 +1,7 @@
 #ifndef _FIBLFSR_HPP
 #define _FIBLFSR_HPP 1
 
-#include <climits>
+#include <cstddef>
 #include <iostream>
 #include <set>
 #include <string>
@@ -17,9 +17,7 @@ class FibLFSR
 
     // Constructor for FibLFSR. Uses a hash function to create a 64-bit-long
     // register from the keyphrase, with tap positions using the Fibonacci sequence.
-    FibLFSR(std::string keyphrase) : FibLFSR(hashToSeed(keyphrase), FibonacciValues(hashToSeed(keyphrase).length()))
-    {
-    }
+    FibLFSR(std::string keyphrase);
 
     // Performs one shift step in the LFSR. Returns the inserted bit.
     int step();
@@ -28,17 +26,20 @@ class FibLFSR
     // as an integer.
     int generate(int k);
 
-    friend std::ostream &operator<<(std::ostream &out, FibLFSR X);
+    friend std::ostream &operator<<(std::ostream &out, FibLFSR &L);
 
   private:
     // Return the set of Fibonacci sequence up to n, exclusive.
     static std::set<unsigned> FibonacciValues(unsigned n);
 
-    // Hashes a keyphrase to a 64-bit long seed for use in constructor.
-    static std::string hashToSeed(std::string keyphrase);
+    const unsigned _HASH_CONST = 41849243;
+    const unsigned _HASH_MULT = 33;
 
-    std::vector<bool> reg_list; // Internal container for the register
-    std::set<unsigned> taps;    // Set of tap indices
+    unsigned long long _register; // Internal container for the register
+    std::set<unsigned> _taps;    // Set of tap indices
+    
+    const size_t _MAX_SIZE = 64;
+    size_t N;
 };
 
 #endif // End of FibLFSR.hpp

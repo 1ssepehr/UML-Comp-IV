@@ -2,35 +2,52 @@
 #include <stdexcept>
 
 FibLFSR::FibLFSR(std::string seed, std::set<unsigned> tap_values)
+    : _register(0), N(seed.size())
 {
-    unsigned N = seed.size();
-
     if (N == 0)
         throw std::invalid_argument("Given seed is empty.");
 
-    taps = tap_values.empty() ? FibonacciValues(N) : tap_values;
-    taps.insert(N - 1); // Add the leftmost index as a tap
-
-    if (N < *taps.rbegin()) // if shorter than largest tap -> exception
-        throw std::invalid_argument("Tap index out-of-bounds.");
-
-    reg_list.reserve(N);
-    for (char bit : seed)
+    if (N >= _MAX_SIZE)
     {
-        if (bit != '0' && bit != '1')
-            throw std::invalid_argument("Invalid characters in the initializing seed.");
-        reg_list.push_back(bit == '1');
+        std::cerr << "Warning: given seed \"" << seed << "\" is too long, only evaluating the first ";
+        std::cerr << _MAX_SIZE << " bits.\n";
+        N = _MAX_SIZE;
     }
+    
+    for (unsigned i = 0; i < N; i++)
+    {
+        int c = seed[N - 1 - i] - '0';
+        if (c == 1)
+            _register |= 1LLU << i;
+        else if (c != 0)
+            throw std::invalid_argument("Invalid characters in seed.");
+    }
+
+    _taps = tap_values.empty() ? FibonacciValues(N) : tap_values;
+    _taps.insert(N - 1); // Add the leftmost index as a tap
+    if (*_taps.rbegin() > N) // if shorter than largest tap -> exception
+        throw std::invalid_argument("Tap index out-of-bounds.");
+}
+
+FibLFSR::FibLFSR(std::string keyphrase)
+{
+    // Hashes a keyphrase to a 64-bit long seed for the register.
+    unsigned long long hash = _HASH_CONST;
+    for (auto c : keyphrase)
+        hash = _HASH_MULT * hash + c;
+
+    N = 64;
+    _register = hash;
+    _taps = FibonacciValues(N);
 }
 
 int FibLFSR::step()
 {
     bool feedback_bit = 0;
-    unsigned N = reg_list.size();
-    for (unsigned i : taps)
-        feedback_bit ^= reg_list[N - 1 - i]; // Since index 0 starts from the right
-    reg_list.push_back(feedback_bit);        // Add the rightmost bit
-    reg_list.erase(reg_list.begin());        // Drop the leftmost bit
+    for (unsigned i : _taps)
+        feedback_bit ^= (_register & (1LLU << i)) && true;
+    _register <<= 1;
+    _register |= feedback_bit;
     return feedback_bit;
 }
 
@@ -42,23 +59,12 @@ int FibLFSR::generate(int k)
     return feedback_value;
 }
 
-std::ostream &operator<<(std::ostream &out, FibLFSR X)
+std::ostream &operator<<(std::ostream &out, FibLFSR &L)
 {
     std::string result;
-    for (bool bit : X.reg_list)
-        result += bit + '0';
+    for (unsigned i = 0; i < L.N; i++)
+        result += '0' + ((L._register & (1LLU << i)) && true);
     return out << result;
-}
-
-std::string FibLFSR::hashToSeed(std::string key)
-{
-    unsigned hash = 41849243;
-    for (auto c : key)
-        hash = ((hash << 5) + hash) + c;
-    std::string seed{};
-    for (unsigned i = 0; i < CHAR_BIT * sizeof(hash); i++)
-        seed += ((hash & (1U << i)) > 0) + '0';
-    return seed;
 }
 
 std::set<unsigned> FibLFSR::FibonacciValues(unsigned n)
