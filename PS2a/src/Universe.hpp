@@ -1,9 +1,11 @@
 #ifndef UNIVERSE_HPP
 #define UNIVERSE_HPP
 
+#include <istream>
+#include <memory>
+
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include <istream>
 
 #include "CelestialBody.hpp"
 
@@ -34,7 +36,7 @@ private:
     double center_x, center_y;  // Coordinates of window's center
     unsigned N;  // Number of bodies
     double R;  // Radius of the universe
-    std::vector<CelestialBody> bodyVec;
+    std::vector<std::unique_ptr<CelestialBody>> bodyVec;
     sf::Texture bgTexture;  // Background texture
     sf::Sprite bgSprite;  // Background sprite
 };

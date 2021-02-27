@@ -1,13 +1,16 @@
-#include "Universe.hpp"
 #include <exception>
+#include <memory>
 #include <stdexcept>
+#include <utility>
+
+#include "CelestialBody.hpp"
+#include "Universe.hpp"
 
 const std::string Universe::DEFAULT_TITLE = "Universe";
 const std::string Universe::BG_PATH = "./assets/starfield.jpg";
 const double Universe::SCALE = 1.6e-9;
 
-Universe::Universe(unsigned N, double R)
-    :N(N), R(R)
+Universe::Universe(unsigned N, double R) : N(N), R(R)
 {
     initialize();
 }
@@ -16,10 +19,9 @@ void Universe::load()
 {
     for (unsigned i = 0; i < N; i++)
     {
-        CelestialBody thisBody;
-        std::cin >> thisBody;
-        bodyVec.push_back(thisBody);
-        
+        auto thisBody = std::make_unique<CelestialBody>();
+        std::cin >> *thisBody;
+        bodyVec.push_back(std::move(thisBody));
     }
 
     sf::Event event;
@@ -40,12 +42,12 @@ void Universe::load()
 
         clear();
         draw(bgSprite);
-        for (auto body: bodyVec)
+        for (auto &body : bodyVec)
         {
-            float x_display = center_x + (body.getX() / (2*R) * width);
-            float y_display = center_y + (body.getY() / (2*R) * height);
-            body.setPosition(x_display, y_display);
-            draw(body);
+            float x_display = center_x + (body->getX() / (2 * R) * width);
+            float y_display = center_y + (body->getY() / (2 * R) * height);
+            body->setPosition(x_display, y_display);
+            draw(*body);
         }
         display();
     }
@@ -60,8 +62,8 @@ std::istream &operator>>(std::istream &in, Universe &universe)
 
 void Universe::initialize()
 {
-    width = 2*R * SCALE;
-    height = 2*R * SCALE;
+    width = 2 * R * SCALE;
+    height = 2 * R * SCALE;
     center_x = width / 2.0;
     center_y = height / 2.0;
 
