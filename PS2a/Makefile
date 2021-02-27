@@ -1,5 +1,5 @@
 CXX      = g++
-CFLAGS   = -Wall -Werror -pedantic -g
+CFLAGS   = -Wall -Werror -pedantic -g -std=c++17
 LFLAGS   = -lsfml-graphics -lsfml-window -lsfml-system
 TEST_FLAGS = $(LFLAGS)  -lboost_unit_test_framework
 
