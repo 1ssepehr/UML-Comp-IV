@@ -6,46 +6,21 @@
 #include "CelestialBody.hpp"
 #include "Universe.hpp"
 
-const std::string Universe::DEFAULT_TITLE = "Universe";
-const std::string Universe::BG_PATH = "./assets/starfield.jpg";
-const double Universe::SCALE = 1.6e-9;
-
-Universe::Universe(unsigned N, double R) : N(N), R(R)
-{
-    initialize();
-}
-
 void Universe::load()
 {
-    for (unsigned i = 0; i < N; i++)
-    {
-        auto thisBody = std::make_unique<CelestialBody>();
-        std::cin >> *thisBody;
-        bodyVec.push_back(std::move(thisBody));
-    }
-
     sf::Event event;
     while (isOpen())
     {
         while (pollEvent(event))
-        {
-            switch (event.type)
-            {
-            case sf::Event::Closed:
+            if (event.type == sf::Event::Closed)
                 close();
-                break;
-
-            default:
-                break;
-            }
-        }
 
         clear();
         draw(bgSprite);
         for (auto &body : bodyVec)
         {
-            float x_display = center_x + (body->getX() / (2 * R) * width);
-            float y_display = center_y + (body->getY() / (2 * R) * height);
+            float x_display = (getWinSpan() / 2) + (body->getX() / (2 * R) * getWinSpan());
+            float y_display = (getWinSpan() / 2) + (body->getY() / (2 * R) * getWinSpan());
             body->setPosition(x_display, y_display);
             draw(*body);
         }
@@ -56,24 +31,35 @@ void Universe::load()
 std::istream &operator>>(std::istream &in, Universe &universe)
 {
     in >> universe.N >> universe.R;
-    universe.initialize();
+    if (universe.N > Universe::MAX_BODY_COUNT)
+        throw std::runtime_error("Error: Encountered more than 1000 planets.");
+    universe.setSize({static_cast<unsigned>(universe.getWinSpan()),
+                      static_cast<unsigned>(universe.getWinSpan())});  // Resize the window using new R and N values
+
+    // Add N CelestialBody objects as initialized by std::istream &in
+    for (auto i = 0U; i < universe.N; i++)
+    {
+        auto thisBody = std::make_unique<CelestialBody>();
+        std::cin >> *thisBody;
+        universe.bodyVec.push_back(std::move(thisBody));
+    }
     return in;
 }
 
-void Universe::initialize()
+void Universe::step(double time)
 {
-    width = 2 * R * SCALE;
-    height = 2 * R * SCALE;
-    center_x = width / 2.0;
-    center_y = height / 2.0;
 
+}
+
+void Universe::loadArtifacts()
+{
     if (!bgTexture.loadFromFile(BG_PATH))
         throw std::runtime_error("Assets are not present with the executable.");
     bgTexture.setSmooth(true);
     bgSprite.setTexture(bgTexture);
-    auto scaleFactor = width / bgSprite.getGlobalBounds().width;
+    auto scaleFactor = getWinSpan() / bgSprite.getGlobalBounds().width;
     bgSprite.setScale(scaleFactor, scaleFactor);
 
-    create(sf::VideoMode(width, height), DEFAULT_TITLE);
+    create(sf::VideoMode(getWinSpan(), getWinSpan()), DEFAULT_TITLE);
     setFramerateLimit(60);
 }

@@ -17,17 +17,17 @@ class CelestialBody : public sf::Drawable
     double getY() const { return y; }
 
     void setPosition(float x, float y) { sprite.setPosition(x, y); }
+  
   private:
-
+    // Initialize the object of the target
     void initialize();
     virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
 
     friend std::istream& operator>>(std::istream& in, CelestialBody& body);
 
-    double x;
-    double y;
-    double v_x;
-    double v_y;
+    double x, y;
+    double v_x, v_y;
+    double f_x, f_y;
     double mass;
     std::string name;
     sf::Sprite sprite;
