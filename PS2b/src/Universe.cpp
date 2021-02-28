@@ -26,9 +26,8 @@ void Universe::load()
         draw(bgSprite);
         for (auto &body : bodyVec)
         {
-            float x_display = getWinSpan() * (0.5 + body->x / (2 * R));
-            float y_display = getWinSpan() * (0.5 + body->y / (2 * R));
-            // std::cout << body.get() << std::endl;
+            float x_display = getWinSpan() * (0.5 + body->r.x / (2 * R));
+            float y_display = getWinSpan() * (0.5 + body->r.y / (2 * R));
             body->setPosition(x_display, y_display);
             draw(*body);
         }
@@ -60,27 +59,27 @@ void Universe::step(double duration)
     curTime += duration;
     for (auto &body : bodyVec)
     {
-        body->f_x = body->f_y = 0;
+        body->f.x = body->f.y = 0;
         for (auto &other : bodyVec)
         {
             if (body != other)
             {
-                auto dx = other->x - body->x;
-                auto dy = other->y - body->y;
+                auto dx = other->r.x - body->r.x;
+                auto dy = other->r.y - body->r.y;
                 auto r = std::sqrt(dx * dx + dy * dy);
                 auto f = G * body->mass * other->mass / (r * r);
-                body->f_x += f * (dx / r);
-                body->f_y += f * (dy / r);
+                body->f.x += f * (dx / r);
+                body->f.y += f * (dy / r);
             }
         }
-        body->a_x = body->f_x / body->mass;
-        body->a_y = body->f_y / body->mass;
+        body->a.x = body->f.x / body->mass;
+        body->a.y = body->f.y / body->mass;
 
-        body->v_x += duration * body->a_x;
-        body->v_y += duration * body->a_y;
+        body->v.x += duration * body->a.x;
+        body->v.y += duration * body->a.y;
 
-        body->x += duration * body->v_x;
-        body->y += duration * body->v_y;
+        body->r.x += duration * body->v.x;
+        body->r.y += duration * body->v.y;
     }
 }
 

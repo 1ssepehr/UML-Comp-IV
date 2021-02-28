@@ -7,6 +7,14 @@
 
 #include <SFML/Graphics.hpp>
 
+class Point
+{
+  public:
+    Point(): x(0), y(0) {}
+    Point(double x, double y): x(x), y(y) {}
+    double x, y;
+};
+
 class CelestialBody : public sf::Drawable
 {
   public:
@@ -23,11 +31,16 @@ class CelestialBody : public sf::Drawable
     friend std::istream& operator>>(std::istream& in, CelestialBody& body);
     friend class Universe;
 
-    double x = 0, y = 0;
-    double v_x = 0, v_y = 0;
-    double a_x = 0, a_y = 0;
-    double f_x = 0, f_y = 0;
+    Point r;
+    Point v;
+    Point a;
+    Point f;
     double mass = 1;
+
+    // Runge-Kutta 4th order calculations
+    Point k1r, k2r, k3r, k4r;
+    Point k1v, k2v, k3v, k4v;
+
     std::string name;
     sf::Sprite sprite;
     sf::Texture texture;
