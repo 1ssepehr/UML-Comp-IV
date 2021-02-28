@@ -19,7 +19,6 @@ void CelestialBody::loadArtifacts()
     if (!texture.loadFromFile(path))
         throw std::invalid_argument("Texture filename not found.");
     sprite.setTexture(texture);
-    // std::cout << "Texture loaded!\n";
 }
 
 void CelestialBody::draw(sf::RenderTarget &target, sf::RenderStates states) const
