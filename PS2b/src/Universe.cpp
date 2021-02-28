@@ -1,4 +1,3 @@
-#include <SFML/Window/VideoMode.hpp>
 #include <cmath>
 #include <exception>
 #include <iostream>
@@ -26,8 +25,8 @@ void Universe::load()
         draw(bgSprite);
         for (auto &body : bodyVec)
         {
-            float x_display = getWinSpan() * (0.5 + body->r.x / (2 * R));
-            float y_display = getWinSpan() * (0.5 + body->r.y / (2 * R));
+            float x_display = getSize().x * (0.5 + body->r.x / (2 * R));
+            float y_display = getSize().x * (0.5 + body->r.y / (2 * R));
             body->setPosition(x_display, y_display);
             draw(*body);
         }
@@ -40,9 +39,7 @@ std::istream &operator>>(std::istream &in, Universe &universe)
     in >> universe.N >> universe.R;
     if (universe.N > Universe::MAX_BODY_COUNT)
         throw std::runtime_error("Error: Encountered more than 1000 planets.");
-    universe.create(sf::VideoMode(universe.getWinSpan(), universe.getWinSpan()),
-                    universe.DEFAULT_TITLE); // Resize the window using new R and N values
-    auto bgScale = universe.getWinSpan() / universe.bgSprite.getLocalBounds().width;
+    auto bgScale = universe.getSize().x / universe.bgSprite.getLocalBounds().width;
     universe.bgSprite.setScale(bgScale, bgScale);
 
     // Add N CelestialBody objects as initialized by std::istream &in
@@ -50,6 +47,7 @@ std::istream &operator>>(std::istream &in, Universe &universe)
     {
         universe.bodyVec.push_back(std::make_unique<CelestialBody>());
         in >> *universe.bodyVec.back();
+        universe.bodyVec.back()->setScale(bgScale);
     }
     return in;
 }
@@ -89,8 +87,8 @@ void Universe::loadArtifacts()
         throw std::runtime_error("Assets are not present with the executable.");
     bgTexture.setSmooth(true);
     bgSprite.setTexture(bgTexture);
-    auto scaleFactor = getWinSpan() / bgSprite.getLocalBounds().width;
+    auto scaleFactor = getSize().x / bgSprite.getLocalBounds().width;
     bgSprite.setScale(scaleFactor, scaleFactor);
-    create(sf::VideoMode(getWinSpan(), getWinSpan()), DEFAULT_TITLE);
+    create(sf::VideoMode(WINDOW_SIZE, WINDOW_SIZE), DEFAULT_TITLE);
     setFramerateLimit(60);
 }

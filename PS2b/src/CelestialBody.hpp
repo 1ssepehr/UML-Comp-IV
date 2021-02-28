@@ -22,6 +22,7 @@ class CelestialBody : public sf::Drawable
     CelestialBody(int x, int y, double v_x, double v_y, double mass, std::string name);
 
     void setPosition(float x, float y) { sprite.setPosition(x, y); }
+    void setScale(float scale) { sprite.setScale(scale, scale); }
 
   private:
     // Initialize the object of the target

@@ -14,7 +14,6 @@ int main(int argc, char *argv[])
 
     Universe SolarSystem(T, delta_T);
     std::cin >> SolarSystem;
-    SolarSystem.setTitle("Solar System");
     SolarSystem.load();
     return 0;
 }

@@ -40,21 +40,15 @@ class Universe : public sf::RenderWindow
     // Reads assets and initializes SFML artifacts for simulation based on N, R value
     void loadArtifacts();
 
-    // Span (width or height) of the sf::RenderWindow
-    inline float getWinSpan()
-    {
-        return 2 * R * SCALE;
-    }
-
     // Steps once through time (by delta_t) and moves the
     void step(double time);
 
     constexpr static auto DEFAULT_TITLE = "Universe";         // Default window title
     constexpr static auto DEFAULT_TIME = 157788000.0;         // Default endTime
     constexpr static auto DEFAULT_DELTA_T = 25000.0;          // Default delta_T
+    constexpr static auto WINDOW_SIZE = 800;                  // Default window size
     constexpr static auto DEFAULT_R = 1e11;                   // Default radius R
     constexpr static auto BG_PATH = "./assets/starfield.jpg"; // Default path to the background
-    constexpr static auto SCALE = 1.6e-9;                     // Scale for the universe to display window
     constexpr static auto MAX_BODY_COUNT = 1000;              // Maximum number of CelestialBodies in the universe
     constexpr static auto G = 6.674e-11;                      // Gravitational Constant
 
