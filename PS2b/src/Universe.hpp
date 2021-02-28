@@ -17,13 +17,13 @@ class Universe : public sf::RenderWindow
 {
   public:
     // Default constructor
-    Universe() : N(0), R(0), curTime(0), endTime(DEFAULT_TIME), delta_t(DEFAULT_DELTA_T)
+    Universe() : N(0), R(DEFAULT_R), curTime(0), endTime(DEFAULT_TIME), delta_t(DEFAULT_DELTA_T)
     {
         loadArtifacts();
     }
 
     // Main constructor
-    Universe(double endTime, double delta_t) : N(0), R(0), curTime(0), endTime(endTime), delta_t(delta_t)
+    Universe(double endTime, double delta_t) : N(0), R(DEFAULT_R), curTime(0), endTime(endTime), delta_t(delta_t)
     {
         if (endTime <= 0)
             throw std::invalid_argument("Error: Given T (end time for Universe object) is negative.");
@@ -52,6 +52,7 @@ class Universe : public sf::RenderWindow
     constexpr static auto DEFAULT_TITLE = "Universe";         // Default window title
     constexpr static auto DEFAULT_TIME = 157788000.0;         // Default endTime
     constexpr static auto DEFAULT_DELTA_T = 25000.0;          // Default delta_T
+    constexpr static auto DEFAULT_R = 1e11;                   // Default radius R
     constexpr static auto BG_PATH = "./assets/starfield.jpg"; // Default path to the background
     constexpr static auto SCALE = 1.6e-9;                     // Scale for the universe to display window
     constexpr static auto MAX_BODY_COUNT = 1000;              // Maximum number of CelestialBodies in the universe

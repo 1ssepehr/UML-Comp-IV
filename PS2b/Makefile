@@ -1,5 +1,5 @@
 CXX      = g++
-CXXFLAGS = -Wall -Werror -pedantic -g -std=c++17 -MMD
+CXXFLAGS = -Wextra -Werror -pedantic -ggdb -std=c++17 -MMD -MP
 LFLAGS   = -lsfml-graphics -lsfml-window -lsfml-system
 
 SRC_DIR  := src
@@ -17,7 +17,7 @@ all: $(EXE)
 $(EXE): $(OBJECTS) | $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) $^ $(LFLAGS) -o $@
 
-$(OBJECTS): $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 $(BIN_DIR) $(OBJ_DIR):
