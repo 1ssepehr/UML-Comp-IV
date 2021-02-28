@@ -36,6 +36,8 @@ class Universe : public sf::RenderWindow
     // Loads the window of simulation
     void load();
 
+    constexpr static auto G = 6.674e-11; // Gravitational Constant
+
   private:
     // Reads assets and initializes SFML artifacts for simulation based on N, R value
     void loadArtifacts();
@@ -50,7 +52,6 @@ class Universe : public sf::RenderWindow
     constexpr static auto DEFAULT_R = 1e11;                   // Default radius R
     constexpr static auto BG_PATH = "./assets/starfield.jpg"; // Default path to the background
     constexpr static auto MAX_BODY_COUNT = 1000;              // Maximum number of CelestialBodies in the universe
-    constexpr static auto G = 6.674e-11;                      // Gravitational Constant
 
     unsigned N;     // Number of bodies
     double R;       // Radius of the universe

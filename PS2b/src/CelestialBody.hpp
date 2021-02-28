@@ -12,7 +12,14 @@ class Point
   public:
     Point(): x(0), y(0) {}
     Point(double x, double y): x(x), y(y) {}
-    double x, y;
+
+    friend Point operator+(Point A, Point B) { return Point(A.x + B.x, A.y + B.y); }
+    Point operator+=(Point other) { x += other.x; y += other.y; return *this; }
+    template<typename T> friend Point operator*(T scalar, Point p) { return Point(p.x * scalar, p.y *= scalar); }
+
+    friend std::ostream& operator<<(std::ostream& out, Point p) { return out << "(" << p.x << ", " << p.y << ")"; }
+
+    double x, y;    
 };
 
 class CelestialBody : public sf::Drawable
@@ -32,17 +39,17 @@ class CelestialBody : public sf::Drawable
     friend std::istream& operator>>(std::istream& in, CelestialBody& body);
     friend class Universe;
 
-    Point r;
-    Point v;
-    Point a;
-    Point f;
+    Point r;  // Position
+    Point v;  // Velocity
+    Point a;  // Acceleration
+    Point f;  // Net force acting on the body
     double mass = 1;
 
     // Runge-Kutta 4th order calculations
     Point k1r, k2r, k3r, k4r;
     Point k1v, k2v, k3v, k4v;
 
-    std::string name;
+    std::string name;     // Path to file for the texture
     sf::Sprite sprite;
     sf::Texture texture;
 };

@@ -52,32 +52,88 @@ std::istream &operator>>(std::istream &in, Universe &universe)
     return in;
 }
 
-void Universe::step(double duration)
+void Universe::step(double h)
 {
-    curTime += duration;
-    for (auto &body : bodyVec)
+    curTime += h;
+
+    std::vector<Point> net_force(N);
+    std::vector<double> mass(N);
+    for (unsigned i = 0; i < N; i++)
+        mass[i] = bodyVec[i]->mass;
+    std::vector<Point> position(N);
+
+    // Function to calculate forces based on given position (position) and mass (mass).
+    // Updates the content of `std::vector<Point> net_force` with the new calculated forces.
+    // We use this function multiple times for approximations of Runge-Kutta method.
+    auto calculate_forces = [](const std::vector<Point> &position, const std::vector<double> &mass, std::vector<Point> &net_force)
     {
-        body->f.x = body->f.y = 0;
-        for (auto &other : bodyVec)
+        unsigned N = position.size();
+        for (unsigned i = 0; i < N; i++)
         {
-            if (body != other)
+            net_force[i] = {0, 0};
+            for (unsigned j = 0; j < N; j++)
             {
-                auto dx = other->r.x - body->r.x;
-                auto dy = other->r.y - body->r.y;
-                auto r = std::sqrt(dx * dx + dy * dy);
-                auto f = G * body->mass * other->mass / (r * r);
-                body->f.x += f * (dx / r);
-                body->f.y += f * (dy / r);
+                if (i == j) continue;
+                auto dx = position[j].x - position[i].x;
+                auto dy = position[j].y - position[i].y;
+                auto radius = std::sqrt(dx * dx + dy * dy);
+                auto f_g = Universe::G * mass[j] / std::pow(radius, 3);
+
+                net_force[i].x += f_g * dx;
+                net_force[i].y += f_g * dy;
             }
         }
-        body->a.x = body->f.x / body->mass;
-        body->a.y = body->f.y / body->mass;
+    };
 
-        body->v.x += duration * body->a.x;
-        body->v.y += duration * body->a.y;
+    // Step 1 of Runge-Kutta method
+    for (unsigned i = 0; i < N; i++)
+        position[i] = bodyVec[i]->r;
+    calculate_forces(position, mass, net_force);
 
-        body->r.x += duration * body->v.x;
-        body->r.y += duration * body->v.y;
+    for (unsigned i = 0; i < N; i++)
+    {
+        bodyVec[i]->k1r = bodyVec[i]->v;
+        bodyVec[i]->k1v = net_force[i];
+    }
+    
+    // Step 2 of Runge-Kutta method
+    for (unsigned i = 0; i < N; i++)
+        position[i] = bodyVec[i]->r + (h/2) * bodyVec[i]->k1r;
+    calculate_forces(position, mass, net_force);  
+
+    for (unsigned i = 0; i < N; i++)
+    {
+        bodyVec[i]->k2r = bodyVec[i]->v + (h/2) * bodyVec[i]->k1v;
+        bodyVec[i]->k2v = net_force[i];
+    }
+
+    // Step 3 of Runge-Kutta method
+    for (unsigned i = 0; i < N; i++)
+        position[i] = bodyVec[i]->r + (h/2) * bodyVec[i]->k2r;
+    calculate_forces(position, mass, net_force);  
+
+    for (unsigned i = 0; i < N; i++)
+    {
+        bodyVec[i]->k3r = bodyVec[i]->v + (h/2) * bodyVec[i]->k2v;
+        bodyVec[i]->k3v = net_force[i];
+    }
+
+    // Step 4 of Runge-Kutta method
+    for (unsigned i = 0; i < N; i++)
+        position[i] = bodyVec[i]->r + h * bodyVec[i]->k3r;
+    calculate_forces(position, mass, net_force);  
+
+    for (unsigned i = 0; i < N; i++)
+    {
+        bodyVec[i]->k4r = bodyVec[i]->v + h * bodyVec[i]->k3v;
+        bodyVec[i]->k4v = net_force[i];
+    }
+
+    // Update the values of next step for each body
+    for (auto &M: bodyVec)
+    {
+        M->v += (h/6) * (M->k1v + 2*M->k2v + 2*M->k3v + M->k4v);
+        M->r += (h/6) * (M->k1r + 2*M->k2r + 2*M->k3r + M->k4r);
     }
 }
 
