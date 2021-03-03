@@ -51,8 +51,8 @@ class Universe : public sf::RenderWindow
     constexpr static auto DEFAULT_DELTA_T = 25000.0;          // Default delta_T
     constexpr static auto WINDOW_SIZE = 800;                  // Default window size
     constexpr static auto DEFAULT_R = 1e11;                   // Default radius R
-    constexpr static auto BG_PATH = "./assets/starfield.jpg"; // Default path to the background
-    constexpr static auto MUSIC_PATH = "./assets/2001.wav";   // Default path to music
+    constexpr static auto BG_PATH = "./assets/space.png";     // Default path to the background
+    constexpr static auto MUSIC_PATH = "./assets/LunarLiftoff.wav";   // Default path to music
     constexpr static auto FONT_PATH = "./assets/Oxanium.ttf"; // Default path to font
     constexpr static auto MAX_BODY_COUNT = 1000;              // Maximum number of CelestialBodies in the universe
     constexpr static auto SECS_IN_DAY = 86400;                // Number of seconds in a day
