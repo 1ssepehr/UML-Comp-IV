@@ -16,5 +16,6 @@ int main(int argc, char *argv[])
     std::cin >> SolarSystem;
     SolarSystem.setTitle("Universe (With Runge Kutta)");
     SolarSystem.load();
+    std::cout << SolarSystem;
     return 0;
 }

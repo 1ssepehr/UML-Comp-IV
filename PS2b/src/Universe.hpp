@@ -1,17 +1,15 @@
 #ifndef UNIVERSE_HPP
-#define UNIVERSE_HPP
+#define UNIVERSE_HPP 1
 
 #include <istream>
 #include <memory>
 #include <stdexcept>
 
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
-
-#include "CelestialBody.hpp"
-
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+
+#include "CelestialBody.hpp"
 
 class Universe : public sf::RenderWindow
 {
@@ -33,6 +31,9 @@ class Universe : public sf::RenderWindow
     // Extraction operator for reading N, R from input stream
     friend std::istream &operator>>(std::istream &in, Universe &universe);
 
+    // Insertion operator for outputing the state of the universe
+    friend std::ostream &operator<<(std::ostream &out, Universe &universe);
+
     // Loads the window of simulation
     void load();
 
@@ -51,7 +52,10 @@ class Universe : public sf::RenderWindow
     constexpr static auto WINDOW_SIZE = 800;                  // Default window size
     constexpr static auto DEFAULT_R = 1e11;                   // Default radius R
     constexpr static auto BG_PATH = "./assets/starfield.jpg"; // Default path to the background
+    constexpr static auto MUSIC_PATH = "./assets/2001.wav";   // Default path to music
+    constexpr static auto FONT_PATH = "./assets/Oxanium.ttf"; // Default path to font
     constexpr static auto MAX_BODY_COUNT = 1000;              // Maximum number of CelestialBodies in the universe
+    constexpr static auto SECS_IN_DAY = 86400;                // Number of seconds in a day
 
     unsigned N;     // Number of bodies
     double R;       // Radius of the universe
@@ -60,6 +64,9 @@ class Universe : public sf::RenderWindow
     double delta_t; // Increment steps for time
 
     std::vector<std::unique_ptr<CelestialBody>> bodyVec; // Vector of CelestialBody objects
+    sf::Music bgMusic;                                   // Background music
+    sf::Font timer_font;                                 // Font for timer
+    sf::Text timer;                                      // Timer for displaying elapsed time
     sf::Texture bgTexture;                               // Background texture
     sf::Sprite bgSprite;                                 // Background sprite
 };
