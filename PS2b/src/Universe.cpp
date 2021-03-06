@@ -23,7 +23,7 @@ void Universe::load()
 
         step(delta_t);
         if (curTime > endTime)
-            close();
+            delta_t = 0;
 
         // Printing time
         auto days = curTime / SECS_IN_DAY;
