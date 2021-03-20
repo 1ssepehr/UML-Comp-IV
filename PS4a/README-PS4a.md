@@ -69,7 +69,7 @@ bool isFull() const { return used_size == capacity; }
 
 **Did you complete the whole assignment? Successfully or not? Indicate which parts you think are working, and describe how you know that they're working.**
 
-Yes, all of PS4a is completed (including _cpplint_). I also made the `CircularBuffer` class a template class for versatility (and programming practice!). The test unit, Makefile, and the code all work properly.
+Yes, all of PS4a is completed (including _cpplint_). I also made the `CircularBuffer` class a template class for versatility (and programming practice!). The test unit, Makefile, and the code all work properly. I also formatted my code using `clang-format` with Google's coding style.
 
 ---
 
