@@ -5,12 +5,13 @@
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE CircularBuffer_test
 
+#include <cstdint>
 #include <stdexcept>
 #include "CircularBuffer.hpp"
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_CASE(enqueueDequeueTest) {
-  CircularBuffer B(7);
+  CircularBuffer<std::int16_t> B(7);
   BOOST_REQUIRE(B.isEmpty());
 
   B.enqueue(9);
@@ -37,7 +38,7 @@ BOOST_AUTO_TEST_CASE(enqueueDequeueTest) {
 }
 
 BOOST_AUTO_TEST_CASE(overflowTest) {
-  CircularBuffer B(5);
+  CircularBuffer<std::int16_t> B(5);
   int16_t values[] = {8, 3, 6, 1, 10};
   for (auto x : values) B.enqueue(x);
 
@@ -46,10 +47,10 @@ BOOST_AUTO_TEST_CASE(overflowTest) {
 }
 
 BOOST_AUTO_TEST_CASE(emptyBufferDequeueTest) {
-  CircularBuffer B(5);
+  CircularBuffer<std::int16_t> B(5);
   BOOST_REQUIRE_THROW(B.dequeue(), std::runtime_error);
 }
 
 BOOST_AUTO_TEST_CASE(badCapacityTest) {
-  BOOST_REQUIRE_THROW(CircularBuffer B(0), std::invalid_argument);
+  BOOST_REQUIRE_THROW(CircularBuffer<std::int16_t> B(0), std::invalid_argument);
 }
