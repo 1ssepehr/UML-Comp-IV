@@ -42,10 +42,10 @@ int main() {
   samples.reserve(keyboard_size);
   std::vector<sf::SoundBuffer> buf(keyboard_size);
   std::vector<sf::Sound> sound(keyboard_size);
+  auto calculateFreq = [](auto i) {
+    return CONCERT_A * pow(2, (i - 24.0) / 12.0);
+  };
   for (int i = 0; i < keyboard_size; i++) {
-    auto calculateFreq = [](auto i) {
-      return CONCERT_A * pow(2, (i - 24.0) / 12.0);
-    };
     StringSound Guitar(calculateFreq(i));
     samples.push_back(makeSamplesFromString(&Guitar));
     if (!(buf[i]).loadFromSamples(&samples[i][0], samples[i].size(), 2,
