@@ -2,8 +2,8 @@
 // Distributed under MIT license, available at
 // https://opensource.org/licenses/MIT.
 
-#ifndef PS4_SRC_CIRCULARBUFFER_HPP_
-#define PS4_SRC_CIRCULARBUFFER_HPP_ 1
+#ifndef PS4B_SRC_CIRCULARBUFFER_HPP_
+#define PS4B_SRC_CIRCULARBUFFER_HPP_ 1
 
 #include <cstddef>
 #include <memory>
@@ -26,6 +26,8 @@ class CircularBuffer {
   size_t size() const { return used_size; }
   bool isEmpty() const { return used_size == 0; }
   bool isFull() const { return used_size == capacity; }
+
+  void reset();
   void enqueue(T x);
   T dequeue();
   T peek();
@@ -37,7 +39,6 @@ class CircularBuffer {
   size_t back;       // Index after the last used element
   size_t used_size;  // Number of elements in use
   size_t capacity;   // Total capacity of the buffer
-
 };
 
 template <typename T>
@@ -47,6 +48,11 @@ CircularBuffer<T>::CircularBuffer(size_t capacity)
     throw std::invalid_argument(
         "CircularBuffer constructor: capacity must be greater than zero.");
   buffer = std::make_unique<T[]>(capacity);
+}
+
+template <typename T>
+void CircularBuffer<T>::reset() {
+  front = back = used_size = 0;
 }
 
 template <typename T>
@@ -73,4 +79,4 @@ T CircularBuffer<T>::peek() {
   return buffer[front];
 }
 
-#endif  // PS4_SRC_CIRCULARBUFFER_HPP_
+#endif  // PS4B_SRC_CIRCULARBUFFER_HPP_
