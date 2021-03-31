@@ -4,19 +4,29 @@
 
 CXX      := g++
 CXXFLAGS := -Wextra -Werror -pedantic -ggdb -std=c++17 -MMD -MP
-LFLAGS   := -lboost_unit_test_framework -lsfml-audio -lsfml-system -lsfml-graphics -lsfml-window
+LFLAGS   := -lsfml-audio -lsfml-system -lsfml-graphics -lsfml-window
+LFLAGS_T := -lboost_unit_test_framework
 
 SRC_DIR  := src
 OBJ_DIR  := obj
 EXE      := KSGuitarSim
+TEST     := boosttest
 
 SOURCES  := $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 
-.PHONY: all
-all: $(EXE)
+.PHONY: all build test clean
 
-$(EXE): $(OBJECTS)
+all: build test
+
+build: $(EXE)
+
+test: $(TEST)
+
+$(TEST): $(filter-out $(OBJ_DIR)/$(EXE).o, $(OBJECTS))
+	$(CXX) $^ $(LFLAGS_T) -o $@
+
+$(EXE): $(filter-out $(OBJ_DIR)/$(TEST).o, $(OBJECTS))
 	$(CXX) $^ $(LFLAGS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
@@ -25,8 +35,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 $(BIN_DIR) $(OBJ_DIR):
 	@mkdir -pv $@
 
-.PHONY: clean
 clean:
-	@$(RM) -rvf $(EXE) $(OBJ_DIR)
+	@$(RM) -rvf $(EXE) $(TEST) $(OBJ_DIR)
 
 -include $(OBJECTS:%.o=%.d)
