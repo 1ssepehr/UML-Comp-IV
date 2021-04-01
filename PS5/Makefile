@@ -1,11 +1,11 @@
-CXX      := clang++
+CXX      := g++
 CXXFLAGS := -Wextra -Werror -pedantic -ggdb -std=c++17 -MMD -MP
 LFLAGS   := -lsfml-graphics -lsfml-window -lsfml-system
 
 SRC_DIR  := src
 OBJ_DIR  := obj
 
-EXE      := Triangle
+EXE      := TFractal
 
 SOURCES  := $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
