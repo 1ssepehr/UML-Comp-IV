@@ -72,6 +72,7 @@ int main(int argc, char* argv[]) {
     }
   }
 
+  // Write the final report on the output file
   output << "Device Boot Report\n\n"
          << "InTouch log file: " << pathname << "\n"
          << "Lines Scanned: " << line_number << "\n\n"
