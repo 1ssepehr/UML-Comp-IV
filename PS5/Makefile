@@ -14,7 +14,7 @@ OBJECTS  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 all: $(EXE)
 
 $(EXE): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ $(LFLAGS) -o $@
+	$(CXX) $^ $(LFLAGS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@

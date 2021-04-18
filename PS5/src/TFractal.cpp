@@ -6,7 +6,6 @@
 #include <stdexcept>
 #include <vector>
 
-#include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
 #include "Triangle.hpp"

@@ -4,8 +4,6 @@
 
 #include "Triangle.hpp"
 
-#include <SFML/Graphics/PrimitiveType.hpp>
-
 Triangle::Triangle(Point center, double L, sf::Color color,
                    sf::PrimitiveType type)
     : vertices(type, 4) {
