@@ -4,70 +4,80 @@
 
 #include <fstream>
 #include <iostream>
-#include <stdexcept>
+#include <sstream>
 #include <string>
 
-#include <boost/date_time/gregorian/gregorian.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/date_time/posix_time/ptime.hpp>
 #include <boost/regex.hpp>
 
-#include "kronos.hpp"
+#include "intouch_boot.hpp"
 
 int main(int argc, char* argv[]) {
   if (argc <= 1) {
     std::cerr << "Missing file argument." << std::endl;
   }
 
-  std::string log_path{argv[1]};
+  std::string pathname{argv[1]};
 
-  std::ifstream log_file(log_path);
-  std::ofstream output(log_path + ".rpt");
+  std::ifstream log_file(pathname);
+  std::ofstream output(pathname + ".rpt");
+  std::stringstream report;
 
   if (log_file.is_open() == false) {
-    std::cerr << "error: cannot open specified file " << log_path << std::endl;
+    std::cerr << "error: cannot open specified file " << pathname << std::endl;
     return (-1);
   }
 
-  bool liveDevice = false;  // Boot completion flag
-  bool complete = false;
-  std::string line;         // Line string image
-  size_t line_number = 0;   // Line number flag
+  bool isBootInProcess = false;  // Boot completion flag
 
-  boost::gregorian::date startDate, endDate;
-  boost::posix_time::ptime startTime, endTime;
+  std::string line;        // Line string image
+  size_t line_number = 0;  // Line number flag
+
+  size_t success = 0;  // Number of successful booting attempts
+  size_t fail = 0;     // Number of successfulfailed booting attempts
+
+  // Lambda expression to extract the timestamp substring from log entries
+  auto extract_time = [](std::string x) { return x.substr(0, 19); };
 
   // Read lines from log (+ keep track of line numbers)
-  while (++line_number, std::getline(log_file, line)) {
-    // Boot starting sequence
-    boost::smatch what_start;
-    if (boost::regex_search(line, what_start, boot_start) == true) {
-      startDate = boost::gregorian::from_simple_string(line.substr(0, 10));
-      startTime = boost::posix_time::time_from_string(line.substr(11, 8));
+  boost::posix_time::ptime startTime, endTime;
+  while (std::getline(log_file, line)) {
+    ++line_number;
 
-      if (complete == false) {
-        output << "**** Incomplete boot ****\n" << std::endl;
-        output << "=== Device boot ===\n"
-               << line_number << "(" << log_path << "): " << line.substr(0, 19)
-               << " Boot Start" << std::endl;
+    // Boot starting sequence
+    if (boost::regex_search(line, boot_start) == true) {
+      startTime = boost::posix_time::time_from_string(extract_time(line));
+
+      if (isBootInProcess == true) {
+        report << "**** Incomplete boot ****\n\n";
+        ++fail;
       }
+      report << "=== Device boot ===\n"
+             << line_number << "(" << pathname << "): " << extract_time(line)
+             << " Boot Start\n";
+      isBootInProcess = true;
     }
 
     // Boot ending sequence
-    boost::smatch what_end;
-    if (boost::regex_search(line, what_end, boot_end)) {
-      endDate = boost::gregorian::from_simple_string(line.substr(0, 10));
-      endTime = boost::posix_time::time_from_string(line.substr(11, 8));
+    if (boost::regex_search(line, boot_end)) {
+      endTime = boost::posix_time::time_from_string(extract_time(line));
+      auto elapsedBootTime = endTime - startTime;
 
-      output << line_number << "(" << log_path << "): " << line.substr(0, 19)
-             << " Boot Completed" << std::endl;
+      ++success;
+      isBootInProcess = false;
 
-      boost::posix_time::time_duration td = startTime - endTime;
-      output << "\tBoot Time: " << td.total_milliseconds() << "ms\n"
-             << std::endl;
-      complete = true;
+      report << line_number << "(" << pathname << "): " << extract_time(line)
+             << " Boot Completed\n\tBoot Time: "
+             << elapsedBootTime.total_milliseconds() << "ms\n\n";
     }
   }
+
+  output << "Device Boot Report\n\n"
+         << "InTouch log file: " << pathname << "\n"
+         << "Lines Scanned: " << line_number << "\n\n"
+         << "Device boot count: initiated = " << (success + fail)
+         << ", completed = " << success << "\n\n\n"
+         << report.rdbuf();
 
   output.close();
   log_file.close();
