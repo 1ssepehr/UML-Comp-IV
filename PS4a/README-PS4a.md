@@ -27,7 +27,7 @@ PS4a
 The program can be run via:
 
 ```Bash
-make all && ./CircBufferTest --log_level=all
+make all && ./PS4a --log_level=all
 ```
 
 ---

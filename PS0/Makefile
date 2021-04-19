@@ -1,30 +1,28 @@
-CC=g++
-LFLAGS= -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
-CFLAGS= -Wall -Werror -pedantic -g
+CXX      := g++
+CXXFLAGS := -std=c++17 -Wextra -Werror -pedantic -ggdb -MMD -MP
+LFLAGS   := -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
-SRC_DIR := src
-OBJ_DIR := obj
-BIN_DIR := bin
+SRC_DIR  := src
+OBJ_DIR  := obj
 
-EXE := $(BIN_DIR)/sfml-app
+EXE      := PS0
 
-SRC := $(wildcard $(SRC_DIR)/*.cpp)
-OBJ := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SRC))
+SOURCES  := $(wildcard $(SRC_DIR)/*.cpp)
+OBJECTS  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 
 .PHONY: all clean
-
 all: $(EXE)
 
-$(EXE): $(OBJ) | $(BIN_DIR)
-	$(CC) $^ $(LFLAGS) -o $@
+$(EXE): $(OBJECTS)
+	$(CXX) $^ $(LFLAGS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(BIN_DIR)  $(OBJ_DIR):
-	mkdir -p $@
+$(OBJ_DIR):
+	@mkdir -pv $@
 
 clean:
-	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)
+	@$(RM) -rvf $(OBJ_DIR) $(EXE)
 
--include $(OBJ:.o=.d)
+-include $(OBJECTS:%.o=%.d)

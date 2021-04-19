@@ -1,5 +1,5 @@
 CXX      := g++
-CXXFLAGS := -Wextra -Werror -pedantic -ggdb -std=c++17 -MMD -MP
+CXXFLAGS := -std=c++17 -Wextra -Werror -pedantic -ggdb -MMD -MP
 LFLAGS   := -lboost_regex -lboost_date_time
 
 SRC_DIR  := src
@@ -14,7 +14,7 @@ OBJECTS  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 all: $(EXE)
 
 $(EXE): $(OBJECTS)
-	$(CXX) $(CXXFLAGS) $^ $(LFLAGS) -o $@
+	$(CXX) $^ $(LFLAGS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@

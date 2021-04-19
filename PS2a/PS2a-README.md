@@ -31,7 +31,7 @@ PS2a
 The program can be run via:
 
 ```Bash
-make all && ./bin/NBody < ./assets/planets.txt
+make all && ./PS2a < ./assets/planets.txt
 ```
 
 ---

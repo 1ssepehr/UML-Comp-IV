@@ -8,12 +8,12 @@ LFLAGS   := -lboost_unit_test_framework
 
 SRC_DIR  := src
 OBJ_DIR  := obj
-EXE      := CircBufferTest
+EXE      := PS4a
 
 SOURCES  := $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 
-.PHONY: all
+.PHONY: all clean
 all: $(EXE)
 
 $(EXE): $(OBJECTS)
@@ -25,7 +25,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
 $(BIN_DIR) $(OBJ_DIR):
 	@mkdir -pv $@
 
-.PHONY: clean
 clean:
 	@$(RM) -rvf $(EXE) $(OBJ_DIR)
 

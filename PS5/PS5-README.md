@@ -32,7 +32,7 @@ PS5
 To run the program, simply run:
 
 ```bash
-make all && ./TFractal 300 5
+make all && ./PS5 300 5
 ```
 
 ---

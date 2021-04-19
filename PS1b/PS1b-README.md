@@ -34,13 +34,13 @@ PS1b
 The test can be run via:
 
 ```Bash
-make test && ./bin/boost_test
+make test && ./PS1b_test --log_level=all
 ```
 
 The program can be run via:
 
 ```Bash
-make all && ./bin/PhotoMagic wolf.png wolf_out.png [Your_Passphrase]
+make all && ./PS1b wolf.png wolf_out.png [Your_Passphrase]
 ```
 
 ---

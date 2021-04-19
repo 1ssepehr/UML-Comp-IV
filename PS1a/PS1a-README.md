@@ -8,7 +8,7 @@
 
 ---
 
-### Briefly discuss the assignment itself and what you accomplished.
+**Briefly discuss the assignment itself and what you accomplished.**
 
 This assignment consists of implementing and unit-testing a [simulation of a] Linear Feedback Shift Register (LFSR) for generating pseudo-random bits.
 
@@ -16,9 +16,15 @@ An LFSR is a register that generates the next state of the vacant bit after shif
 
 I designed an exception-safe simulation of an LFSR using C++ and wrote three unit-tests using the Boost Unit Test Framework.
 
+To test the program, run:
+
+```Bash
+make && ./PS1a --log_level=all
+```
+
 ---
 
-### Explain the representation you used for the register bits (how it works, and why you selected it).
+**Explain the representation you used for the register bits (how it works, and why you selected it).**
 
 A lot of students were suggesting using std::bitset for the internal
 representation of the register; I disagreed, as the size of the seed (and ergo,the size of the register) is not known until run-time. There was the option of boost::dynamic_bitset, but I passed.
@@ -29,7 +35,7 @@ Also, as an STL container, using `std::vector` eliminates the need for manual dy
 
 ---
 
-### Discuss what's being tested in your two additional Boost unit tests
+**Discuss what's being tested in your two additional Boost unit tests.**
 
 The first test I wrote tests the return values for `FibLFSR::step()` and `FibLFSR::generate()` functions.
 
@@ -37,16 +43,16 @@ The second test I wrote examines the exception-safety of the FibLFSR module by t
 
 ---
 
-### List whatever help (if any) you received from the instructor,  classmates, or anyone else.
+**List whatever help (if any) you received from the instructor,  classmates, or anyone else.**
 
 I did this assignment entirely on my own.
 
 ---
 
-### Describe any serious problems you encountered.
+**Describe any serious problems you encountered.**
 
 All resolved!
 
 ---
 
-### List any other comments here.
+**List any other comments here.**

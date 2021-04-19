@@ -1,46 +1,46 @@
-#ifndef _GAME_H
-#define _GAME_H
+// (C) Copyright Seyedsepehr Madani, 2021.
+// Distributed under MIT license, available at
+// https://opensource.org/licenses/MIT.
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/System/Vector2.hpp>
+#ifndef PS0_SRC_GAME_HPP_
+#define PS0_SRC_GAME_HPP_
 
-#include "globals.hpp"
-#include "spaceship.hpp"
-#include "asteroid.hpp"
-
+#include <random>
 #include <string>
 #include <vector>
-#include <random>
 
+#include <SFML/Graphics.hpp>
+#include <SFML/System/Vector2.hpp>
 
-class SepGame
-{
-public:
-    SepGame();
-    void load_gameOver();
-    void start_game();
-    void adjust_player();
+#include "asteroid.hpp"
+#include "globals.hpp"
+#include "spaceship.hpp"
 
-private:
-    sf::RenderWindow window;
-    sf::RenderWindow gameOver;
-    sf::Sprite BackgroundSpr_1;
-    sf::Sprite BackgroundSpr_2;
-    sf::Texture BackgroundTex;
+class SepGame {
+ public:
+  SepGame();
+  void load_gameOver();
+  void start_game();
+  void adjust_player();
 
-    Spaceship Player;
-    std::vector<Asteroid> Obstacles;
-    sf::Clock clock;
+ private:
+  sf::RenderWindow window;
+  sf::RenderWindow gameOver;
+  sf::Sprite BackgroundSpr_1;
+  sf::Sprite BackgroundSpr_2;
+  sf::Texture BackgroundTex;
 
-    sf::Font font;
-    sf::Text label;
-    bool isGameOver;
+  Spaceship Player;
+  std::vector<Asteroid> Obstacles;
+  sf::Clock clock;
 
-    constexpr static int ASTEROID_LIMIT = 12;
-    constexpr static float PLAYER_SPEED = 7.f;
-    constexpr static float BG_SPEED = 1.5f;
+  sf::Font font;
+  sf::Text label;
+  bool isGameOver;
+
+  static constexpr int ASTEROID_LIMIT = 12;
+  static constexpr float PLAYER_SPEED = 7.f;
+  static constexpr float BG_SPEED = 1.5f;
 };
 
-#endif
+#endif  // PS0_SRC_GAME_HPP_

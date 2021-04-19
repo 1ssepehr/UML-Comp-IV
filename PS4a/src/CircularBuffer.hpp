@@ -2,8 +2,8 @@
 // Distributed under MIT license, available at
 // https://opensource.org/licenses/MIT.
 
-#ifndef PS4_SRC_CIRCULARBUFFER_HPP_
-#define PS4_SRC_CIRCULARBUFFER_HPP_ 1
+#ifndef PS4A_SRC_CIRCULARBUFFER_HPP_
+#define PS4A_SRC_CIRCULARBUFFER_HPP_ 1
 
 #include <cstddef>
 #include <memory>
@@ -73,4 +73,4 @@ T CircularBuffer<T>::peek() {
   return buffer[front];
 }
 
-#endif  // PS4_SRC_CIRCULARBUFFER_HPP_
+#endif  // PS4A_SRC_CIRCULARBUFFER_HPP_

@@ -9,14 +9,13 @@ LFLAGS_T := -lboost_unit_test_framework
 
 SRC_DIR  := src
 OBJ_DIR  := obj
-EXE      := KSGuitarSim
-TEST     := boosttest
+EXE      := PS4b
+TEST     := PS4b_test
 
 SOURCES  := $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 
 .PHONY: all build test clean
-
 all: build test
 
 build: $(EXE)

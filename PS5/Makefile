@@ -5,7 +5,7 @@ LFLAGS   := -lsfml-graphics -lsfml-window -lsfml-system
 SRC_DIR  := src
 OBJ_DIR  := obj
 
-EXE      := TFractal
+EXE      := PS5
 
 SOURCES  := $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))

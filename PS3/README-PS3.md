@@ -29,13 +29,13 @@ PS2b
 The program can be run via:
 
 ```Bash
-make all && ./bin/ED < example10.txt
+make all && ./PS3 < example10.txt
 ```
 
 ⚠ It's advised to redirect the output to a file rather than the terminal for large inputs, like so:
 
 ```Bash
-make all && ./bin/ED < ecoli2500.txt > output
+make all && ./PS3 < ecoli2500.txt > output
 ```
 
 ---

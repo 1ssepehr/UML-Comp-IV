@@ -1,13 +1,16 @@
-#include "Universe.hpp"
-#include "CelestialBody.hpp"
+// (C) Copyright Seyedsepehr Madani, 2021.
+// Distributed under MIT license, available at
+// https://opensource.org/licenses/MIT.
 
 #include <iostream>
 
-int main(int argc, char *argv[])
-{
-    Universe SolarSystem;
-    std::cin >> SolarSystem;
-    SolarSystem.setTitle("Solar System");
-    SolarSystem.load();
-    return 0;
+#include "CelestialBody.hpp"
+#include "Universe.hpp"
+
+int main(int argc, char *argv[]) {
+  Universe SolarSystem;
+  std::cin >> SolarSystem;
+  SolarSystem.setTitle("Solar System");
+  SolarSystem.load();
+  return 0;
 }

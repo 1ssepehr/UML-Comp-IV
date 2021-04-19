@@ -30,13 +30,13 @@ PS4b
 For building the program, run:
 
 ```Bash
-make build && ./KSGuitarSim
+make build && ./PS4b
 ```
 
 For running the unit test module for `StringSound`, run:
 
 ```Bash
-make test && ./boosttest --log_level=all
+make test && ./PS4b_test --log_level=all
 ```
 
 ---

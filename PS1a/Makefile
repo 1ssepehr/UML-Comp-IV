@@ -1,38 +1,28 @@
-CXX       = g++
-CFLAGS   = -g -Wall -Werror -pedantic
-LFLAGS   = -lboost_unit_test_framework
+CXX      := g++
+CXXFLAGS := -std=c++17 -Wextra -Werror -pedantic -ggdb -MMD -MP
+LFLAGS   := -lboost_unit_test_framework
 
 SRC_DIR  := src
 OBJ_DIR  := obj
-BIN_DIR  := bin
 
-EXE      := boosttest
-TARGET   := $(BIN_DIR)/$(EXE)
+EXE      := PS1a
 
 SOURCES  := $(wildcard $(SRC_DIR)/*.cpp)
 OBJECTS  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
 
 .PHONY: all clean
+all: $(EXE)
 
-all: $(TARGET)
+$(EXE): $(OBJECTS)
+	$(CXX) $^ $(LFLAGS) -o $@
 
-# linking
-$(TARGET): $(OBJECTS) | $(BIN_DIR)
-	$(CXX) $(CFLAGS) $^ $(LFLAGS) -o $@
-
-# .cpp + .hpp pairs
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(SRC_DIR)/%.hpp| $(OBJ_DIR)
-	$(CXX) $(CFLAGS) -c $< -o $@
-
-# Singleton .cpp files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
-	$(CXX) $(CFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Directories
-$(BIN_DIR) $(OBJ_DIR):
+$(OBJ_DIR):
 	@mkdir -pv $@
 
 clean:
-	@$(RM) -rv $(BIN_DIR) $(OBJ_DIR)
+	@$(RM) -rvf $(OBJ_DIR) $(EXE)
 
--include $(OBJ:.o=.d)
+-include $(OBJECTS:%.o=%.d)

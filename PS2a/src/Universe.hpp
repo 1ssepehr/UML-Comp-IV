@@ -1,44 +1,45 @@
-#ifndef UNIVERSE_HPP
-#define UNIVERSE_HPP
+// (C) Copyright Seyedsepehr Madani, 2021.
+// Distributed under MIT license, available at
+// https://opensource.org/licenses/MIT.
+
+#ifndef PS2A_SRC_UNIVERSE_HPP_
+#define PS2A_SRC_UNIVERSE_HPP_
 
 #include <istream>
 #include <memory>
-
-#include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
-
-#include "CelestialBody.hpp"
+#include <vector>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 
-class Universe: public sf::RenderWindow
-{
-public:
-    // Default constructor
-    Universe() {}
+#include "CelestialBody.hpp"
 
-    // Main constructor
-    Universe(unsigned N, double R);
+class Universe : public sf::RenderWindow {
+ public:
+  // Default constructor
+  Universe() {}
 
-    // Extraction operator
-    friend std::istream& operator>>(std::istream& in, Universe& universe);
+  // Main constructor
+  Universe(unsigned N, double R);
 
-    void load();
+  // Extraction operator
+  friend std::istream& operator>>(std::istream& in, Universe& universe);
 
-private:
-    void initialize();
-    const static std::string DEFAULT_TITLE;
-    const static std::string BG_PATH;  // Default path to the background
-    const static double SCALE;  // Scale for the universe to display window
+  void load();
 
-    double width, height;  // Dimensions of the window
-    double center_x, center_y;  // Coordinates of window's center
-    unsigned N;  // Number of bodies
-    double R;  // Radius of the universe
-    std::vector<std::unique_ptr<CelestialBody>> bodyVec;
-    sf::Texture bgTexture;  // Background texture
-    sf::Sprite bgSprite;  // Background sprite
+ private:
+  void initialize();
+  static const char DEFAULT_TITLE[];
+  static const char BG_PATH[];  // Default path to the background
+  static const double SCALE;    // Scale for the universe to display window
+
+  double width, height;       // Dimensions of the window
+  double center_x, center_y;  // Coordinates of window's center
+  unsigned N;                 // Number of bodies
+  double R;                   // Radius of the universe
+  std::vector<std::unique_ptr<CelestialBody>> bodyVec;
+  sf::Texture bgTexture;  // Background texture
+  sf::Sprite bgSprite;    // Background sprite
 };
 
-#endif // end of Universe.hpp
+#endif  // PS2A_SRC_UNIVERSE_HPP_

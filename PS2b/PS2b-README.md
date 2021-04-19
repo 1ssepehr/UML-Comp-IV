@@ -34,7 +34,7 @@ PS2b
 The program can be run via:
 
 ```bash
-make all && ./bin/NBody 157788000.0 25000.0 < ./assets/planets.txt
+make all && ./PS2b 157788000.0 25000.0 < ./assets/planets.txt
 ```
 
 For the sample run of the universe used in the video, use `./assets/dance10.txt`.
