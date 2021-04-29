@@ -57,8 +57,8 @@ int main() {
     sf::Event event;
     while (window.pollEvent(event)) {
       if (event.type == sf::Event::Closed) window.close();
-      for (int i = 0; i < keyboard_size; i++) {
-        if (event.type == sf::Event::TextEntered) {
+      if (event.type == sf::Event::TextEntered) {
+        for (int i = 0; i < keyboard_size; i++) {
           if (event.text.unicode == static_cast<unsigned>(keyboard[i])) {
             std::cout << "Playing " << keyboard[i] << " note" << std::endl;
             sound[i].play();

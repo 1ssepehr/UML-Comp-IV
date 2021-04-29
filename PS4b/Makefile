@@ -22,10 +22,10 @@ build: $(EXE)
 
 test: $(TEST)
 
-$(TEST): $(filter-out $(OBJ_DIR)/$(EXE).o, $(OBJECTS))
+$(TEST): $(filter-out $(OBJ_DIR)/KSGuitarSim.o, $(OBJECTS))
 	$(CXX) $^ $(LFLAGS_T) -o $@
 
-$(EXE): $(filter-out $(OBJ_DIR)/$(TEST).o, $(OBJECTS))
+$(EXE): $(filter-out $(OBJ_DIR)/boosttest.o, $(OBJECTS))
 	$(CXX) $^ $(LFLAGS) -o $@
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp | $(OBJ_DIR)
