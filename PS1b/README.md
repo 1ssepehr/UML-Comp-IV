@@ -4,6 +4,12 @@
 
 ***Hours to complete assignment:** 8 hours*
 
+*Encoding a picture of [Juggernaut](https://www.dota2.com/hero/juggernaut) with a 64-bit long LFSR using key `13UglyChairs?`.*
+![](./screenshots/encode.png)
+
+*Decoding images with the same LFSR and key.*
+![](./screenshots/decode.png)
+
 ## Questions
 
 ---
