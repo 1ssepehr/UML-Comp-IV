@@ -4,6 +4,8 @@
 
 ***Hours to complete assignment:** 11 hours*
 
+![](./demo/PS2_demo.gif)
+
 ## Questions
 
 ---
