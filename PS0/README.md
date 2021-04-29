@@ -8,6 +8,8 @@
 
 ***Hours to complete assignment:** 7.5 hours*
 
+![](./assets/PS0_demo.gif)
+
 ## Questions
 
 ---
